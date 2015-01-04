@@ -21,7 +21,7 @@ public class Pyramid : MonoBehaviour
 		if (con.Turn == koma.Enemy) {
 			if (Input.GetMouseButtonDown (0)) {
 			
-				if (koma.kNum == GameObject.Find ("SELECT").GetComponent<Select> ().SelectKomaNum) {
+				if (koma.kNum == GameObject.Find ("SELECT").GetComponent<Select> ().SelectKomaNum && !GameObject.Find ("ControllPlayer").GetComponent<Controll> ().Move) {
 					rigidbody.useGravity = !rigidbody.useGravity;
 					//				Debug.Log("OK");
 					//				Debug.Log(kNum);
@@ -78,6 +78,7 @@ public class Pyramid : MonoBehaviour
 								if (c.renderer.material.color == Color.yellow) {
 								
 									transform.position = c.pos;
+									GameObject.Find ("ControllPlayer").GetComponent<Controll> ().Move = true;
 //								transform.Translate (0, transform.lossyScale.y, 0);
 									//color chenge
 									GameObject[] cs = GameObject.FindObjectsOfType (typeof(GameObject)) as GameObject[];

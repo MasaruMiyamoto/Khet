@@ -265,7 +265,7 @@ public class MyGUI : MonoBehaviour
 			//Shot Sphinx
 			Controll con = GameObject.Find ("ControllPlayer").GetComponent<Controll> ();
 			if (GUI.Button (new Rect (350, 30, 100, 30), "Shot!!") && GameObject.Find ("SELECT").GetComponent<Select> ().SelectKomaNum == 0) {
-
+				if(!GameObject.Find ("Laser(Clone)")){
 				GameObject[] cs = GameObject.FindObjectsOfType (typeof(GameObject)) as GameObject[];
 				foreach (GameObject cc in cs) {
 					if (cc.name == "SphinxPrefab(Clone)") {
@@ -275,7 +275,8 @@ public class MyGUI : MonoBehaviour
 						}
 					}
 				}
-
+				GameObject.Find ("ControllPlayer").GetComponent<Controll> ().Move = false;
+				}
 			}
 			if (!con.Turn) {
 				GUI.Label (new Rect (380, 10, 100, 30), "Player");
@@ -301,6 +302,7 @@ public class MyGUI : MonoBehaviour
 							k.transform.Rotate (new Vector3 (0, -90f, 0));
 							k.rigidbody.useGravity = ! k.rigidbody.useGravity;
 							turnFlag = false;
+							GameObject.Find ("ControllPlayer").GetComponent<Controll> ().Move = true;
 							GameObject.Find ("SELECT").GetComponent<Select> ().SelectKomaNum = 0;
 							//Debug.Log("left");
 						}
@@ -308,6 +310,7 @@ public class MyGUI : MonoBehaviour
 							k.transform.Rotate (new Vector3 (0, 90f, 0));
 							k.rigidbody.useGravity = ! k.rigidbody.useGravity;
 							turnFlag = false;
+							GameObject.Find ("ControllPlayer").GetComponent<Controll> ().Move = true;
 							GameObject.Find ("SELECT").GetComponent<Select> ().SelectKomaNum = 0;
 						}
 					}

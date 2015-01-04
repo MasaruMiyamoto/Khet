@@ -22,7 +22,7 @@ public class Koma : MonoBehaviour
 	void Update ()
 	{
 
-		if (con.Turn == Enemy) {
+		if (con.Turn == Enemy && !GameObject.Find ("ControllPlayer").GetComponent<Controll> ().Move) {
 			if (Input.GetMouseButtonDown (1)) {
 
 				if (kNum == GameObject.Find ("SELECT").GetComponent<Select> ().SelectKomaNum && name != "SphinxPrefab(Clone)") {
