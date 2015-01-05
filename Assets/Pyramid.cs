@@ -18,7 +18,7 @@ public class Pyramid : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		if (con.Turn == koma.Enemy) {
+		if (con.Turn == koma.Enemy && !GameObject.Find ("Laser(Clone)")) {
 			if (Input.GetMouseButtonDown (0)) {
 			
 				if (koma.kNum == GameObject.Find ("SELECT").GetComponent<Select> ().SelectKomaNum && !GameObject.Find ("ControllPlayer").GetComponent<Controll> ().Move) {

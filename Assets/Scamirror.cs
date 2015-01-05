@@ -27,30 +27,30 @@ public class Scamirror : MonoBehaviour {
 			if(me == 89 || me == 179 || me == 269 || me == 359) me +=1;
 			
 			you = (int)obj.transform.eulerAngles.y;
-									Debug.Log (me);
-									Debug.Log (you);
+//									Debug.Log (me);
+//									Debug.Log (you);
 			//			Debug.Log (obj.transform.eulerAngles);
 
 			if(me - you == 0){
-				Debug.Log ("1");
+//				Debug.Log ("1");
 				obj.transform.Rotate (0, 90f, 0);
 			}else if(me-you == 90){
-				Debug.Log ("2");
+//				Debug.Log ("2");
 				obj.transform.Rotate (0, -90f, 0);
 			}else if(me-you == -90){
-				Debug.Log ("3");
+//				Debug.Log ("3");
 				obj.transform.Rotate (0, -90f, 0);
 			}else if(me - you == 180){
-				Debug.Log ("4");
+//				Debug.Log ("4");
 				obj.transform.Rotate (0, 90f, 0);
 			}else if(me - you == -180){
-				Debug.Log ("5");
+//				Debug.Log ("5");
 				obj.transform.Rotate (0, 90f, 0);
 			}else if(me-you == 270){
-				Debug.Log ("6");
+//				Debug.Log ("6");
 				obj.transform.Rotate (0, -90f, 0);
 			}else if(me-you == -270){
-				Debug.Log ("7");
+//				Debug.Log ("7");
 				obj.transform.Rotate (0, -90f, 0);
 			}
 		}

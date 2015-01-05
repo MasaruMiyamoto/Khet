@@ -40,5 +40,11 @@ public class Cube : MonoBehaviour
 	{
 		CollisionStay = false;
 		ScarabFlag = false;
+		Debug.Log ("Exit");
+
+	}
+
+	void OnCollisionStay (Collision collision){
+		Debug.Log ("Stay");
 	}
 }

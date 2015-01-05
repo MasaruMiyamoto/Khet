@@ -18,7 +18,7 @@ public class Select : MonoBehaviour
 		{
 				//Always useing ray
 		
-				if (!GameObject.Find ("ControllPlayer").GetComponent<Controll> ().Move) {
+				if (!GameObject.Find ("ControllPlayer").GetComponent<Controll> ().Move && !GameObject.Find ("Laser(Clone)")) {
 						if (Input.GetMouseButtonDown (0)) {
 								Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 								RaycastHit hit = new RaycastHit ();

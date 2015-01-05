@@ -7,7 +7,7 @@ public class Shot : MonoBehaviour
 		// Use this for initialization
 		void Start ()
 		{
-				Speed = 0.04f;
+				Speed = 0.05f;
 		}
 	
 		// Update is called once per frame

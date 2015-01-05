@@ -25,7 +25,7 @@ public class Sphinx : MonoBehaviour
 		void Update ()
 		{
 
-				if (con.Turn == koma.Enemy) {
+				if (con.Turn == koma.Enemy && !GameObject.Find ("ControllPlayer").GetComponent<Controll> ().Move) {
 						if (Input.GetMouseButtonDown (0)) {
 
 								if (koma.kNum == GameObject.Find ("SELECT").GetComponent<Select> ().SelectKomaNum) {
@@ -89,6 +89,7 @@ public class Sphinx : MonoBehaviour
 										rigidbody.useGravity = ! rigidbody.useGravity;
 										Gui = false;
 										GameObject.Find ("SELECT").GetComponent<Select> ().SelectKomaNum = 0;
+										GameObject.Find ("ControllPlayer").GetComponent<Controll> ().Move = true;
 										//Debug.Log("left");
 								}
 						} else {
@@ -97,6 +98,7 @@ public class Sphinx : MonoBehaviour
 										rigidbody.useGravity = ! rigidbody.useGravity;
 										Gui = false;
 										GameObject.Find ("SELECT").GetComponent<Select> ().SelectKomaNum = 0;
+										GameObject.Find ("ControllPlayer").GetComponent<Controll> ().Move = true;
 								}
 						}
 				}

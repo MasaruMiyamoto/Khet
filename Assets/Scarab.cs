@@ -17,10 +17,10 @@ public class Scarab : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		if (con.Turn == koma.Enemy) {
+		if (con.Turn == koma.Enemy && !GameObject.Find ("Laser(Clone)")) {
 			if (Input.GetMouseButtonDown (0)) {
 
-				if (koma.kNum == GameObject.Find ("SELECT").GetComponent<Select> ().SelectKomaNum) {
+				if (koma.kNum == GameObject.Find ("SELECT").GetComponent<Select> ().SelectKomaNum && !GameObject.Find ("ControllPlayer").GetComponent<Controll> ().Move) {
 					rigidbody.useGravity = !rigidbody.useGravity;
 
 					//select
@@ -77,6 +77,7 @@ public class Scarab : MonoBehaviour
 								if (c.renderer.material.color == Color.yellow) {
 								
 									transform.position = c.pos;
+									GameObject.Find ("ControllPlayer").GetComponent<Controll> ().Move = true;
 //								transform.Translate (0, transform.lossyScale.y, 0);
 									//color chenge
 									GameObject[] cs = GameObject.FindObjectsOfType (typeof(GameObject)) as GameObject[];
@@ -149,6 +150,7 @@ public class Scarab : MonoBehaviour
 										tmp = koma.transform.position;
 										koma.transform.position = k.transform.position;
 										k.transform.position = tmp;
+										GameObject.Find ("ControllPlayer").GetComponent<Controll> ().Move = true;
 //								k.transform.Translate (0, k.transform.lossyScale.y, 0);
 //								koma.transform.Translate (0, koma.transform.lossyScale.y, 0);
 										GameObject.Find ("SELECT").GetComponent<Select> ().SelectKomaNum = 0;
