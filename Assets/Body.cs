@@ -19,11 +19,11 @@ public class Body : MonoBehaviour
 		void OnTriggerEnter (Collider collider)
 		{
 				if (collider.gameObject.tag == "Laser") {
-//						pre.transform.Translate (0, 0.2f, 0);
-//						pre.rigidbody.useGravity = false;
+						pre.transform.Translate (0, 0.2f, 0);
+						pre.rigidbody.useGravity = false;
 						
-						Destroy (pre); 
-						Destroy (collider.gameObject);
+						Destroy (pre,0.05f); 
+						Destroy (collider.gameObject,0.05f);
 				}
 
 		}

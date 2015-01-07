@@ -24,10 +24,11 @@ public class Scamirror : MonoBehaviour {
 			//						GameObject laser = Instantiate (Laser, parent.transform.position, transform.rotation) as GameObject;
 			//						Destroy (obj);
 			me = (int)parent.transform.eulerAngles.y;
-			if(me == 89 || me == 179 || me == 269 || me == 359) me +=1;
+			if(me == 89 || me == 179 || me == 269) me +=1;
+			if(me == 359) me = 0;
 			
 			you = (int)obj.transform.eulerAngles.y;
-//									Debug.Log (me);
+									Debug.Log (me);
 //									Debug.Log (you);
 			//			Debug.Log (obj.transform.eulerAngles);
 

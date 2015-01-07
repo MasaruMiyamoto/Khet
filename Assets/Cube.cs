@@ -44,7 +44,4 @@ public class Cube : MonoBehaviour
 
 	}
 
-	void OnCollisionStay (Collision collision){
-		Debug.Log ("Stay");
-	}
 }
