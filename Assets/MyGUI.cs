@@ -272,6 +272,7 @@ public class MyGUI : MonoBehaviour
 //						Debug.Log(cc.name);
 						if (cc.GetComponent<Koma> ().Enemy == con.Turn) {
 							cc.GetComponent<Sphinx> ().Shot = true;
+								GameObject.Find ("EnemySystem").GetComponent<EnemySystem> ().x = 1;
 						}
 					}
 				}
