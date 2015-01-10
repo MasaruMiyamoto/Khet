@@ -53,6 +53,7 @@
      <Compile Include="Assets\Cube.cs" />
      <Compile Include="Assets\EnemySystem.cs" />
      <Compile Include="Assets\Field.cs" />
+     <Compile Include="Assets\Hidden.cs" />
      <Compile Include="Assets\Koma.cs" />
      <Compile Include="Assets\Mirror.cs" />
      <Compile Include="Assets\MyGUI.cs" />

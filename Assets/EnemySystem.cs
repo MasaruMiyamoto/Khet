@@ -14,8 +14,8 @@ public struct moveKoma
 	public bool left;
 	public bool right;
 	public int Value;
-	int undoX;
-	int undoY;
+	public int undoX;
+	public int undoY;
 	
 	public void enterKoma (int xnum, int ynum, int knum, bool enemy, string name, int angle)
 	{
@@ -30,7 +30,9 @@ public struct moveKoma
 
 	public void init ()
 	{
+		cleanAngle (Angle);
 		rotation (Angle);
+		rmUndo ();
 	}
 
 	void rotation (int angle)
@@ -85,21 +87,34 @@ public struct moveKoma
 		}
 	}
 
+	void cleanAngle (int angle)
+	{
+		if (angle == 89)
+			Angle = 90;
+		else if (angle == 179)
+			Angle = 180;
+		else if (angle == 269)
+			Angle = 270;
+		else if (angle == 359)
+			Angle = 360;
+//		else Debug.Log("AngleError");
+
+	}
+
 	public void moving (int muki)
 	{
-		undoX = xNum;
-		undoY = yNum;
+		rmUndo ();
 
 		switch (muki) {
 		case 0:
-			if (yNum > 0) {
-				yNum -= 1;
+			if (yNum < 7) {
+				yNum += 1;
 			}
 			break;
 		case 1:
-			if (xNum < 9 && yNum > 0) {
+			if (xNum < 9 && yNum < 7) {
 				xNum += 1;
-				yNum -= 1;
+				yNum += 1;
 			}
 			break;
 		case 2:
@@ -108,20 +123,20 @@ public struct moveKoma
 			}
 			break;
 		case 3:
-			if (xNum < 9 && yNum < 9) {
+			if (xNum < 9 && yNum > 0) {
 				xNum += 1;
-				yNum += 1;
+				yNum -= 1;
 			}
 			break;
 		case 4:
-			if (yNum < 9) {
-				yNum += 1;
+			if (yNum > 0) {
+				yNum -= 1;
 			}
 			break;
 		case 5:
-			if (xNum > 0 && yNum < 9) {
+			if (xNum > 0 && yNum > 0) {
 				xNum -= 1;
-				yNum += 1;
+				yNum -= 1;
 			}
 			break;
 		case 6:
@@ -130,9 +145,9 @@ public struct moveKoma
 			}
 			break;
 		case 7:
-			if (xNum > 0 && yNum > 0) {
+			if (xNum > 0 && yNum < 7) {
 				xNum -= 1;
-				yNum -= 1;
+				yNum += 1;
 			}
 			break;
 		default:
@@ -142,37 +157,24 @@ public struct moveKoma
 		//		Debug.Log ("use");
 	}
 
-	public void moveJudge (moveKoma m)
-	{
-		if (Name == "ScarabePrefab(Clone)" && (m.Name == "AnubisPrefab(Clone)" || m.Name == "MirrorPrefab(Clone)")) {
-			xNum = m.xNum;
-			yNum = m.yNum;
-			m.xNum = undoX;
-			m.yNum = undoY;
-		} else {
-			xNum = undoX;
-			yNum = undoY;
-		}
-	}
-
 	public void spin (bool right)
 	{
 
-		if(Name == "SphinxPrefab(Clone)"){
-			if(Enemy){
-				if(Angle == 90 && right){
+		if (Name == "SphinxPrefab(Clone)") {
+			if (Enemy) {
+				if (Angle == 90 && right) {
 					Angle = 180;
-				}else if(Angle == 180 && !right){
+				} else if (Angle == 180 && !right) {
 					Angle = 90;
 				}
-			}else{
-				if(Angle == 270 && right){
+			} else {
+				if (Angle == 270 && right) {
 					Angle = 0;
-				}else if(Angle == 0 && !right){
+				} else if (Angle == 0 && !right) {
 					Angle = 270;
 				}
 			}
-		}else if (right) {
+		} else if (right) {
 			Angle += 90;
 			if (Angle == 360)
 				Angle = 0;
@@ -182,6 +184,12 @@ public struct moveKoma
 				Angle = 270;
 		}
 		init ();
+	}
+
+	void rmUndo ()
+	{
+		undoX = xNum;
+		undoY = yNum;
 	}
 
 	int initVal (string name)
@@ -215,8 +223,9 @@ public struct Laser
 		angle = 1;
 	}
 
-	public void angleSet(int a){
-		switch(a){
+	public void angleSet (int a)
+	{
+		switch (a) {
 		case 0:
 			angle = 1;
 			break;
@@ -295,8 +304,8 @@ public class EnemySystem : MonoBehaviour
 	void Start ()
 	{
 		x = 1;
-		SEARCH_LEVEL = 3;
-		move = new moveKoma[30];
+		SEARCH_LEVEL = 2;
+		move = new moveKoma[26];
 	}
 	
 	// Update is called once per frame
@@ -324,7 +333,9 @@ public class EnemySystem : MonoBehaviour
 					}
 				}
 				x++;
+				Time.timeScale = 0;
 				compute ();
+				Time.timeScale = 1;
 //				move [2].moving (3);
 			}
 
@@ -336,8 +347,8 @@ public class EnemySystem : MonoBehaviour
 
 		Laser laser = new Laser (enemy);
 		for (int i=0; i<move.Length; i++) {
-			if (move [i].Name == "SphinxPrefab(Clone)" && move[i].Enemy == enemy)
-				laser.angleSet(move[i].Angle);
+			if (move [i].Name == "SphinxPrefab(Clone)" && move [i].Enemy == enemy)
+				laser.angleSet (move [i].Angle);
 		}
 		while (true) {
 
@@ -478,6 +489,156 @@ public class EnemySystem : MonoBehaviour
 		}
 	}
 
+	int returnShot (bool enemy)
+	{
+		
+		Laser laser = new Laser (enemy);
+		for (int i=0; i<move.Length; i++) {
+			if (move [i].Name == "PharaohPrefab(Clone)" && move [i].Enemy != enemy)
+				laser.angleSet (move [i].Angle);
+		}
+		while (true) {
+			
+			laser.move ();
+			if (laser.x < 0 || laser.x > 9 || laser.y < 0 || laser.y > 9) {
+				break;
+			}
+			
+			for (int i=0; i<move.Length; i++) {
+				//				Debug.Log("DesShot");
+				
+				if (laser.x == move [i].xNum && laser.y == move [i].yNum) {
+					
+					if (laser.angle == 1) {
+						if (move [i].Name != "ScarabPrefab(Clone)") {
+							if (move [i].down) {
+								if (move [i].right) {
+									laser.spin (true);
+								} else if (move [i].left) {
+									laser.spin (false);
+								}
+							}
+						} else {
+							if (move [i].down) {
+								if (move [i].right) {
+									laser.spin (true);
+								} else if (move [i].left) {
+									laser.spin (false);
+								}
+							} else {
+								if (!move [i].right) {
+									laser.spin (true);
+								} else if (!move [i].left) {
+									laser.spin (false);
+								}
+							}
+						}
+					}
+					
+					if (laser.angle == 2) {
+						if (move [i].Name != "ScarabPrefab(Clone)") {
+							if (move [i].left) {
+								if (move [i].up) {
+									laser.spin (false);
+								} else if (move [i].down) {
+									laser.spin (true);
+								}
+							}
+						} else {
+							if (move [i].left) {
+								if (move [i].up) {
+									laser.spin (false);
+								} else if (move [i].down) {
+									laser.spin (true);
+								}
+							} else {
+								if (!move [i].up) {
+									laser.spin (false);
+								} else if (!move [i].down) {
+									laser.spin (true);
+								}
+							}
+						}
+					}
+					
+					
+					if (laser.angle == 3) {
+						if (move [i].Name != "ScarabPrefab(Clone)") {
+							if (move [i].up) {
+								if (move [i].right) {
+									laser.spin (false);
+								} else if (move [i].left) {
+									laser.spin (true);
+								}
+							}
+						} else {
+							if (move [i].up) {
+								if (move [i].right) {
+									laser.spin (false);
+								} else if (move [i].left) {
+									laser.spin (true);
+								}
+							} else {
+								if (!move [i].right) {
+									laser.spin (false);
+								} else if (!move [i].left) {
+									laser.spin (true);
+								}
+							}
+						}
+					}
+					
+					
+					if (laser.angle == 4) {
+						if (move [i].Name != "ScarabPrefab(Clone)") {
+							if (move [i].right) {
+								if (move [i].up) {
+									laser.spin (true);
+								} else if (move [i].down) {
+									laser.spin (false);
+								}
+							}
+						} else {
+							if (move [i].right) {
+								if (move [i].up) {
+									laser.spin (true);
+								} else if (move [i].down) {
+									laser.spin (false);
+								}
+							} else {
+								if (!move [i].up) {
+									laser.spin (true);
+								} else if (!move [i].down) {
+									laser.spin (false);
+								}
+							}
+						}
+					}
+					
+					
+				}
+			}
+		}
+
+		return boardScore (laser.x, laser.y, enemy);
+	}
+
+	int boardScore (int x, int y, bool enemy)
+	{
+		if (enemy) {
+			if (x >= -1 && x <= 2 && y >= 5 && y <= 8)
+				return 30;
+			else if (x == -1 && y <= 4)
+				return 20;
+		} else {
+			if (x >= 7 && x <= 10 && y >= -1 && y <= 2)
+				return 30;
+			else if (x == 10 && y <= 3)
+				return 20;
+		}
+		return 0;
+	}
+
 	void Destroy (moveKoma m)
 	{
 		m.xNum = 10;
@@ -487,26 +648,38 @@ public class EnemySystem : MonoBehaviour
 
 	void undoGame (moveKoma[] m)
 	{
-		moveKoma[] undo = new moveKoma[30];
+		moveKoma[] undo = new moveKoma[26];
 		for (int i= 0; i<undo.Length; i++) {
 			move [i] = undo [i];
 		}
 	}
 
-	void komaMove (int num, moveKoma m)
+	moveKoma komaMove (int num, moveKoma m)
 	{
-
-		moveKoma[] undo = new moveKoma[30];
+//		if (m.kNum == 8) {
+//			Debug.Log (m.xNum);
+//			Debug.Log (m.yNum);
+//			Debug.Log (m.Name);
+//			Debug.Log ("move");
+//		}
+		moveKoma[] undo = new moveKoma[26];
 		for (int i = 0; i<move.Length; i++) {
 			undo [i] = move [i];
 		}
 
-		if(num < 8){
-			m.moving(num);
-		}else if (num == 8){
-			m.spin(true);
-		}else if(num == 9){
-			m.spin(false);
+		if (num < 8) {
+			if (m.Name == "ScarabPrefab(Clone)" || m.Name == "MirrorPrefab(Clone)" || m.Name == "AnubisPrefab(Clone)")
+				m.moving (num);
+//			for (int i = 0; i<undo.Length; i++) {
+////				if(
+//			}
+
+		} else if (num == 8) {
+			if (m.Name != "PharaohPrefab(Clone)")
+				m.spin (true);
+		} else if (num == 9) {
+			if (m.Name != "PharaohPrefab(Clone)")
+				m.spin (false);
 		}
 
 //		switch (num) {
@@ -544,117 +717,311 @@ public class EnemySystem : MonoBehaviour
 //			break;
 //		}
 
+//		for (int i = 0; i<undo.Length; i++) {
+//			m.moveJudge (undo [i]);
+//		}
+//		Debug.Log("Before");
 		for (int i = 0; i<undo.Length; i++) {
-			m.moveJudge (undo [i]);
+			if (m.xNum == undo [i].xNum && m.yNum == undo [i].yNum && num < 8) {
+//				Debug.Log(m.Name);
+//				Debug.Log(undo[i].Name);
+				if (m.Name == "ScarabPrefab(Clone)" && (undo [i].Name == "AnubisPrefab(Clone)" || undo [i].Name == "MirrorPrefab(Clone)")) {
+//					Debug.Log("calling");
+					for (int j = 0; j<move.Length; j++) {
+						if (move [j].xNum == undo [i].xNum && move [j].yNum == undo [i].yNum) {
+							move [j].xNum = m.xNum;
+							move [j].yNum = m.yNum;
+						}
+					}
+					break;
+				} else {
+//					Debug.Log("cal");
+//					Debug.Log(m.undoX);
+					m.xNum = m.undoX;
+					m.yNum = m.undoY;
+					break;
+				}
+			}
 		}
-
+		
+		return m;
 	}
 
 	void compute ()
 	{
 		//minimax
-		int v = minimax (true, SEARCH_LEVEL);
+//		int v = minimax (true, SEARCH_LEVEL);
+		int v = alphaBeta (true, SEARCH_LEVEL, 0, 10000);
 		//decision moving
-//		Debug.Log (v);
-		realMove(v);
+		Debug.Log (v);
+		realMove (v);
 //		Debug.Log (v.mNum);
 //		Debug.Log (v.val);
 
 	}
 
-	int minimax (bool flag, int level)
+//	int minimax (bool flag, int level)
+//	{
+////		Debug.Log("mini");
+//		Value value = new Value ();
+//		int val = 0;
+//		int childValue = 0;
+//	
+//		if (level == 0) {
+//			for (int i=0; i<move.Length; i++) {
+//				if (move [i].xNum == 10 && move [i].yNum == 10 && !move [i].Enemy)
+//					val += move [i].Value;
+//			}
+//			return val;
+//		}
+//	
+//		if (flag) {
+//			val = 0;
+//		} else {
+//			val = 10000;
+//		}
+//
+//		for (int i = 0; i<move.Length; i++) {
+//			for (int num = 0; num<10; num++) {
+//			
+//				moveKoma[] undo = new moveKoma[30];
+//				for (int j = 0; j<move.Length; j++) {
+//					undo [j] = move [j];
+//				}
+//
+//				if (move [i].Enemy == flag) {
+//					komaMove (num, move [i]);
+//					Shot (flag);
+//					value.kNum = move [i].kNum;
+//					value.mNum = num;
+//				}
+//
+//				childValue = minimax (!flag, level - 1);
+//
+//				if (flag) {
+//					if (childValue > val) {
+//						val = childValue;
+//					}
+//				} else {
+//					if (childValue < val) {
+//						val = childValue;
+//					}
+//				}
+//
+//				for (int k= 0; k<move.Length; k++) {
+//					move [k] = undo [k];
+//				}
+//
+//			}
+//		}
+//		if (level == SEARCH_LEVEL) {
+//			return value.mNum + value.kNum * 10;
+//		} else {
+//			return val;
+//		}
+//	}
+
+	int alphaBeta (bool flag, int level, int alpha, int beta)
 	{
-//		Debug.Log("mini");
-		Value value = new Value ();
+		//		Debug.Log("mini");
+//		Value value = new Value ();
 		int val = 0;
 		int childValue = 0;
-	
+
+		int bestK = 0;
+		int bestM = 0;
+		int count = 0;
+
+//		if(count == 26){
+//			if (flag) {
+//				return 0;
+//			} else {
+//				return 10000;
+//			}
+//		}else{
+//			count = 0;
+//		}
+
+
 		if (level == 0) {
 			for (int i=0; i<move.Length; i++) {
 				if (move [i].xNum == 10 && move [i].yNum == 10 && !move [i].Enemy)
 					val += move [i].Value;
 			}
+			val += returnShot (flag);
+			if (val > 0)
+				Debug.Log (val);
 			return val;
 		}
-	
+		
 		if (flag) {
 			val = 0;
 		} else {
 			val = 10000;
 		}
-
+		
 		for (int i = 0; i<move.Length; i++) {
 			for (int num = 0; num<10; num++) {
-			
-				moveKoma[] undo = new moveKoma[30];
-				for (int j = 0; j<move.Length; j++) {
-					undo [j] = move [j];
-				}
-
 				if (move [i].Enemy == flag) {
-					komaMove (num, move [i]);
+					count = 0;
+					moveKoma[] undo = new moveKoma[26];
+					for (int j = 0; j<move.Length; j++) {
+						undo [j] = move [j];
+					}
+				
+//					if (move [i].kNum == 8) {
+//						Debug.Log (move [i].xNum);
+//						Debug.Log (move [i].yNum);
+//						Debug.Log (move [i].Angle);
+//						Debug.Log ("");
+//					}
+//					Debug.Log (move [i].xNum);
+//					Debug.Log (move [i].yNum);
+					move [i] = komaMove (num, move [i]);
+//					Debug.Log (move [i].xNum);
+//					Debug.Log (move [i].yNum);
+//					Debug.Log ("");
 					Shot (flag);
-					value.kNum = move [i].kNum;
-					value.mNum = num;
-				}
 
-				if(move != undo){
-					childValue = minimax (!flag, level - 1);
-				}
-
-				if (flag) {
-					if (childValue > val) {
-						val = childValue;
+					int l;
+					for (l = 0; l<undo.Length; l++) {
+						if (undo [l].xNum == move [l].xNum && undo [l].yNum == move [l].yNum && undo [l].Angle == move [l].Angle) {
+							count++;
+						} else {
+//							if (move [l].kNum == 9) {
+//								Debug.Log (move [l].xNum);
+//								Debug.Log (move [l].yNum);
+//								Debug.Log (move [l].Angle);
+//								Debug.Log ("");
+//								
+//								Debug.Log (undo [l].xNum);
+//								Debug.Log (undo [l].yNum);
+//								Debug.Log (undo [l].Angle);
+//								Debug.Log ("");
+//							}
+						}
 					}
-				} else {
-					if (childValue < val) {
-						val = childValue;
+//					if (move [i].kNum == 9) {
+//						Debug.Log (l);
+//						Debug.Log (count);
+//						Debug.Log ("");
+//					}
+					if (count != 26) {
+//					Debug.Log ("child");
+						childValue = alphaBeta (!flag, level - 1, alpha, beta);
+					} 
+
+//					for (int k= 0; k<move.Length; k++) {
+//						move [k] = undo [k];
+//						Debug.Log ("undo"); //OK
+//						Debug.Log (move [k].xNum);
+//						Debug.Log (undo [k].xNum);
+//					}
+//					else {
+//					if (flag) {
+//						childValue = 0;
+//					} else {
+//						childValue = 10000;
+//					}
+//				}
+
+					if (flag) {
+						if (childValue > val) {
+							val = childValue;
+							bestK = move [i].kNum;
+							bestM = num;
+							alpha = val;
+						}
+
+						if (val > beta) {
+							for (int k= 0; k<move.Length; k++) {
+								move [k] = undo [k];
+							}
+							return val;
+						}
+
+
+					} else {
+						if (childValue < val) {
+							val = childValue;
+							bestK = move [i].kNum;
+							bestM = num;
+							beta = val;
+						}
+
+						if (val < alpha) {
+							for (int k= 0; k<move.Length; k++) {
+								move [k] = undo [k];
+							}
+							return val;
+						}
+//					if (level != SEARCH_LEVEL) {
+//						for (int j = 0; j<move.Length; j++) {
+//							if (undo [j].xNum == move [j].xNum && undo [j].yNum == move [j].yNum && undo [j].Angle == move [j].Angle) {
+//								count++;
+//							}
+//						}
+//					}
+//					
+//					if (count == 26) {
+//						return val;
+//					}
 					}
+				
+					for (int k= 0; k<move.Length; k++) {
+						move [k] = undo [k];
+//						Debug.Log("undo"); //OK
+//						Debug.Log (move [k].xNum);
+//						Debug.Log (undo [k].xNum);
+					}
+				
 				}
-
-				for (int k= 0; k<move.Length; k++) {
-					move [k] = undo [k];
-				}
-
 			}
 		}
 		if (level == SEARCH_LEVEL) {
-			return value.mNum + value.kNum * 10;
+//			for (int i = 0; i<move.Length; i++) {
+//				Debug.Log (move [i].xNum);
+//				Debug.Log (move [i].yNum);
+//				Debug.Log ("");
+//			}
+			return bestM + bestK * 10;
 		} else {
+//			Debug.Log (val);
 			return val;
 		}
 	}
 
-	void realMove(int val){
-		moveKoma p = new moveKoma(); 
+	void realMove (int val)
+	{
+		moveKoma p = new moveKoma (); 
 
 		GameObject[] kks = GameObject.FindObjectsOfType (typeof(GameObject)) as GameObject[];
 		foreach (GameObject kk in kks) {
 			if (kk.tag == "Koma") {
 				Koma koma = kk.GetComponent<Koma> ();
-				if (koma.kNum == val/10) {
+				if (koma.kNum == val / 10) {
 					p.xNum = koma.xNum;
 					p.yNum = koma.yNum;
 
 					//move
-					if(val%10 < 8){
-						p.moving(val%10);
+					if (val % 10 < 8) {
+						p.moving (val % 10);
 
 						GameObject[] cs = GameObject.FindObjectsOfType (typeof(GameObject)) as GameObject[];
 						foreach (GameObject cc in cs) {
 							if (cc.name == "CubePrefab(Clone)") {
 								Cube C = cc.GetComponent<Cube> ();
-								if(C.xNum == p.xNum && C.yNum == p.yNum){
+								if (C.xNum == p.xNum && C.yNum == p.yNum) {
 
-									if(!C.CollisionStay){
+									if (!C.CollisionStay) {
 										koma.transform.position = C.pos;
-									}else{
+									} else {
 
 										GameObject[] kss = GameObject.FindObjectsOfType (typeof(GameObject)) as GameObject[];
 										foreach (GameObject ks in kss) {
 											if (ks.tag == "Koma") {
 												Koma komas = ks.GetComponent<Koma> ();
-												if(komas.xNum == p.xNum && komas.yNum == p.yNum){
+												if (komas.xNum == p.xNum && komas.yNum == p.yNum) {
 													komas.transform.position = koma.transform.position;
 													koma.transform.position = C.pos;
 												}
@@ -665,10 +1032,10 @@ public class EnemySystem : MonoBehaviour
 							}
 						}
 
-					}else if(val%10 == 8){
+					} else if (val % 10 == 8) {
 //						p.spin(true);
 						koma.transform.Rotate (new Vector3 (0, 90f, 0));
-					}else if(val%10 == 9){
+					} else if (val % 10 == 9) {
 //						p.spin(false);
 						koma.transform.Rotate (new Vector3 (0, -90f, 0));
 					}

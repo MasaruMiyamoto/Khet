@@ -9,6 +9,7 @@ public class Koma : MonoBehaviour
 	public int kNum;
 	public bool Enemy;
 	Controll con;
+	public bool Hidden;
 	// Use this for initialization
 	void Start ()
 	{
@@ -21,6 +22,9 @@ public class Koma : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
+		if(Hidden){
+			renderer.enabled = false;
+		}
 
 		if (con.Turn == Enemy && !GameObject.Find ("ControllPlayer").GetComponent<Controll> ().Move) {
 			if (Input.GetMouseButtonDown (1)) {

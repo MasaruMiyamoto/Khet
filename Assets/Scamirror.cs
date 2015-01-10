@@ -11,7 +11,10 @@ public class Scamirror : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		if (!gameObject.transform.parent.gameObject.renderer.enabled) {
+			//			Debug.Log("enable");
+			renderer.enabled = false;
+		}
 	}
 
 	void OnTriggerEnter (Collider collider)
@@ -28,7 +31,7 @@ public class Scamirror : MonoBehaviour {
 			if(me == 359) me = 0;
 			
 			you = (int)obj.transform.eulerAngles.y;
-									Debug.Log (me);
+//									Debug.Log (me);
 //									Debug.Log (you);
 			//			Debug.Log (obj.transform.eulerAngles);
 
