@@ -298,6 +298,7 @@ public struct Value
 public class EnemySystem : MonoBehaviour
 {
 	public int x;
+	public bool onCPU;
 	int SEARCH_LEVEL;
 	moveKoma[] move;
 	// Use this for initialization
@@ -311,7 +312,7 @@ public class EnemySystem : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		if (GameObject.Find ("ControllPlayer").GetComponent<Controll> ().Turn && !GameObject.Find ("Laser(Clone)")) {
+		if (GameObject.Find ("ControllPlayer").GetComponent<Controll> ().Turn && !GameObject.Find ("Laser(Clone)") && onCPU) {
 
 			while (x == 1) {
 
@@ -517,6 +518,8 @@ public class EnemySystem : MonoBehaviour
 								} else if (move [i].left) {
 									laser.spin (false);
 								}
+							}else{
+								
 							}
 						} else {
 							if (move [i].down) {
@@ -849,13 +852,12 @@ public class EnemySystem : MonoBehaviour
 					val += move [i].Value;
 			}
 			val += returnShot (flag);
-			if (val > 0)
-				Debug.Log (val);
+//				Debug.Log (val);
 			return val;
 		}
 		
 		if (flag) {
-			val = 0;
+			val = -10000;
 		} else {
 			val = 10000;
 		}
