@@ -298,20 +298,23 @@ public struct Value
 public class EnemySystem : MonoBehaviour
 {
 	public int x;
+	public bool Enemy;
 	int SEARCH_LEVEL;
 	moveKoma[] move;
+	moveKoma[] list;
 	// Use this for initialization
 	void Start ()
 	{
 		x = 1;
 		SEARCH_LEVEL = 2;
-		move = new moveKoma[26];
+		list = new moveKoma[30];
+//		move = new moveKoma[26];
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
-		if (GameObject.Find ("ControllPlayer").GetComponent<Controll> ().Turn && !GameObject.Find ("Laser(Clone)")) {
+		if (GameObject.Find ("ControllPlayer").GetComponent<Controll> ().Turn && !GameObject.Find ("Laser(Clone)") && Enemy) {
 
 			while (x == 1) {
 
@@ -320,8 +323,8 @@ public class EnemySystem : MonoBehaviour
 				foreach (GameObject cc in cs) {
 					if (cc.tag == "Koma") {
 						Koma koma = cc.GetComponent<Koma> (); 
-						move [i].enterKoma (koma.xNum, koma.yNum, koma.kNum, koma.Enemy, koma.name, (int)koma.transform.eulerAngles.y);
-						move [i].init ();
+						list [i].enterKoma (koma.xNum, koma.yNum, koma.kNum, koma.Enemy, koma.name, (int)koma.transform.eulerAngles.y);
+						list [i].init ();
 //						Debug.Log(i);
 //						Debug.Log (move[26].Name);
 //						if (move [i].kNum == 26) {
@@ -331,6 +334,11 @@ public class EnemySystem : MonoBehaviour
 //						}
 						i++;
 					}
+				}
+				Debug.Log (i);
+				move = new moveKoma[i];
+				for (int j = 0; j<i; j++) {
+					move [j] = list [j];
 				}
 				x++;
 				Time.timeScale = 0;
@@ -646,14 +654,6 @@ public class EnemySystem : MonoBehaviour
 
 	}
 
-	void undoGame (moveKoma[] m)
-	{
-		moveKoma[] undo = new moveKoma[26];
-		for (int i= 0; i<undo.Length; i++) {
-			move [i] = undo [i];
-		}
-	}
-
 	moveKoma komaMove (int num, moveKoma m)
 	{
 //		if (m.kNum == 8) {
@@ -662,7 +662,7 @@ public class EnemySystem : MonoBehaviour
 //			Debug.Log (m.Name);
 //			Debug.Log ("move");
 //		}
-		moveKoma[] undo = new moveKoma[26];
+		moveKoma[] undo = new moveKoma[move.Length];
 		for (int i = 0; i<move.Length; i++) {
 			undo [i] = move [i];
 		}
@@ -670,9 +670,6 @@ public class EnemySystem : MonoBehaviour
 		if (num < 8) {
 			if (m.Name == "ScarabPrefab(Clone)" || m.Name == "MirrorPrefab(Clone)" || m.Name == "AnubisPrefab(Clone)")
 				m.moving (num);
-//			for (int i = 0; i<undo.Length; i++) {
-////				if(
-//			}
 
 		} else if (num == 8) {
 			if (m.Name != "PharaohPrefab(Clone)")
@@ -845,12 +842,14 @@ public class EnemySystem : MonoBehaviour
 
 		if (level == 0) {
 			for (int i=0; i<move.Length; i++) {
-				if (move [i].xNum == 10 && move [i].yNum == 10 && !move [i].Enemy)
+				if (move [i].Enemy == flag && move [i].xNum < 10 && move [i].yNum < 10)
+					val += move [i].Value;
+				if (move [i].xNum == 10 && move [i].yNum == 10 && move [i].Enemy != flag)
 					val += move [i].Value;
 			}
-			val += returnShot (flag);
-			if (val > 0)
-				Debug.Log (val);
+//			val += returnShot (flag);
+//			if (val > 0)
+//				Debug.Log (val);
 			return val;
 		}
 		
@@ -864,7 +863,7 @@ public class EnemySystem : MonoBehaviour
 			for (int num = 0; num<10; num++) {
 				if (move [i].Enemy == flag) {
 					count = 0;
-					moveKoma[] undo = new moveKoma[26];
+					moveKoma[] undo = new moveKoma[move.Length];
 					for (int j = 0; j<move.Length; j++) {
 						undo [j] = move [j];
 					}
