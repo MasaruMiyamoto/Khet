@@ -197,9 +197,9 @@ public struct moveKoma
 		if (name == "PharaohPrefab(Clone)") {
 			return 100;
 		} else if (name == "AnubisPrefab(Clone)") {
-			return 50;
+			return 7;
 		} else if (name == "MirrorPrefab(Clone)") {
-			return 10;
+			return 5;
 		}
 		return 0;
 	}
