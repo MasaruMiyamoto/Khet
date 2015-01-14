@@ -15,7 +15,8 @@ public class MyGUI : MonoBehaviour
 
 //	GameObject mCube;
 //	GameObject mKoma;
-	bool flag = true;
+	public int flag = 0;
+	public bool win;
 	public bool turnFlag = false;
 //	bool select = false;
 	//public GameObject cubes;
@@ -24,7 +25,7 @@ public class MyGUI : MonoBehaviour
 
 	void OnGUI ()
 	{
-		if (flag) {
+		if (flag == 0) {
 			if (GUI.Button (new Rect (185, 200, 100, 50), "VS")) {
 				StartGame();
 			}
@@ -33,7 +34,7 @@ public class MyGUI : MonoBehaviour
 				StartGame();
 			}
 
-		} else {
+		} else if(flag == 1){
 			//Shot Sphinx
 			Controll con = GameObject.Find ("ControllPlayer").GetComponent<Controll> ();
 			if (GUI.Button (new Rect (450, 30, 100, 30), "Shot!!") && GameObject.Find ("SELECT").GetComponent<Select> ().SelectKomaNum == 0) {
@@ -55,6 +56,18 @@ public class MyGUI : MonoBehaviour
 				GUI.Label (new Rect (480, 10, 100, 30), "Player");
 			} else {
 				GUI.Label (new Rect (480, 10, 100, 30), "Enemy");
+			}
+		}else if (flag == 2){
+
+			if (!win) {
+				GUI.Label (new Rect (245, 100, 200, 100), "Player Win!!");
+			} else {
+				GUI.Label (new Rect (240, 100, 200, 100), "Computer Win!!");
+			}
+
+			if (GUI.Button (new Rect (235, 200, 100, 50), "Restart")) {
+				flag = 0;
+				turnFlag = false;
 			}
 		}
 
@@ -332,7 +345,7 @@ public class MyGUI : MonoBehaviour
 		
 		//set koma
 		//Instantiate(this.koma, new Vector3(0, 0.55f, 0), Quaternion.identity);
-		flag = false;
+		flag++;
 	
 	}
 

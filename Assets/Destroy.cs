@@ -19,8 +19,8 @@ public class Destroy : MonoBehaviour {
 		if (collider.gameObject.tag == "Laser") {
 			int me = (int)pre.transform.eulerAngles.y;
 			int you = (int)collider.gameObject.transform.eulerAngles.y;
-						Debug.Log (me);
-						Debug.Log (you);
+//						Debug.Log (me);
+//						Debug.Log (you);
 			if (me - you == 0 || me - you == -360) {
 				Destroy (collider.gameObject);
 			} else {
