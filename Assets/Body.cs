@@ -25,14 +25,14 @@ public class Body : MonoBehaviour
 		if (collider.gameObject.tag == "Laser") {
 			pre.transform.Translate (0, 0.2f, 0);
 			pre.rigidbody.useGravity = false;
-			Koma k = pre.gameObject.GetComponent<Koma> ();
+//			Koma k = pre.gameObject.GetComponent<Koma> ();
 //			k.xNum = 10;
 //			k.yNum = 10;
 //			k.collider.isTrigger = true;
 //			k.transform.Translate(0,10f,0);
 			Destroy (pre, 0.05f); 
 			Destroy (collider.gameObject, 0.05f);
-			k.Hidden = true;
+//			k.Hidden = true;
 		}
 
 	}

@@ -298,11 +298,7 @@ public struct Value
 public class EnemySystem : MonoBehaviour
 {
 	public int x;
-<<<<<<< HEAD
 	public bool Enemy;
-=======
-	public bool onCPU;
->>>>>>> FETCH_HEAD
 	int SEARCH_LEVEL;
 	moveKoma[] move;
 	moveKoma[] list;
@@ -310,7 +306,7 @@ public class EnemySystem : MonoBehaviour
 	void Start ()
 	{
 		x = 1;
-		SEARCH_LEVEL = 2;
+		SEARCH_LEVEL = 3;
 		list = new moveKoma[30];
 //		move = new moveKoma[26];
 	}
@@ -318,12 +314,8 @@ public class EnemySystem : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-<<<<<<< HEAD
 		if (GameObject.Find ("ControllPlayer").GetComponent<Controll> ().Turn && !GameObject.Find ("Laser(Clone)") && Enemy) {
-=======
-		if (GameObject.Find ("ControllPlayer").GetComponent<Controll> ().Turn && !GameObject.Find ("Laser(Clone)") && onCPU) {
->>>>>>> FETCH_HEAD
-
+			Resources.UnloadUnusedAssets ();
 			while (x == 1) {
 
 				int i = 0;
@@ -343,7 +335,7 @@ public class EnemySystem : MonoBehaviour
 						i++;
 					}
 				}
-				Debug.Log (i);
+//				Debug.Log (i);
 				move = new moveKoma[i];
 				for (int j = 0; j<i; j++) {
 					move [j] = list [j];
@@ -500,8 +492,10 @@ public class EnemySystem : MonoBehaviour
 
 				}
 			}
-			if (izanami)
+			if (izanami) {
+				Resources.UnloadUnusedAssets ();
 				break;
+			}
 		}
 	}
 
@@ -533,8 +527,6 @@ public class EnemySystem : MonoBehaviour
 								} else if (move [i].left) {
 									laser.spin (false);
 								}
-							}else{
-								
 							}
 						} else {
 							if (move [i].down) {
@@ -857,18 +849,15 @@ public class EnemySystem : MonoBehaviour
 				if (move [i].xNum == 10 && move [i].yNum == 10 && move [i].Enemy != flag)
 					val += move [i].Value;
 			}
-<<<<<<< HEAD
 //			val += returnShot (flag);
 //			if (val > 0)
-=======
-			val += returnShot (flag);
->>>>>>> FETCH_HEAD
 //				Debug.Log (val);
+			Resources.UnloadUnusedAssets ();
 			return val;
 		}
 		
 		if (flag) {
-			val = -10000;
+			val = 0;
 		} else {
 			val = 10000;
 		}
@@ -877,6 +866,7 @@ public class EnemySystem : MonoBehaviour
 			for (int num = 0; num<10; num++) {
 				if (move [i].Enemy == flag) {
 					count = 0;
+					Resources.UnloadUnusedAssets();
 					moveKoma[] undo = new moveKoma[move.Length];
 					for (int j = 0; j<move.Length; j++) {
 						undo [j] = move [j];
@@ -950,6 +940,7 @@ public class EnemySystem : MonoBehaviour
 							for (int k= 0; k<move.Length; k++) {
 								move [k] = undo [k];
 							}
+							Resources.UnloadUnusedAssets ();
 							return val;
 						}
 
@@ -966,6 +957,7 @@ public class EnemySystem : MonoBehaviour
 							for (int k= 0; k<move.Length; k++) {
 								move [k] = undo [k];
 							}
+							Resources.UnloadUnusedAssets ();
 							return val;
 						}
 //					if (level != SEARCH_LEVEL) {
@@ -987,7 +979,7 @@ public class EnemySystem : MonoBehaviour
 //						Debug.Log (move [k].xNum);
 //						Debug.Log (undo [k].xNum);
 					}
-				
+					Resources.UnloadUnusedAssets ();
 				}
 			}
 		}
@@ -997,9 +989,11 @@ public class EnemySystem : MonoBehaviour
 //				Debug.Log (move [i].yNum);
 //				Debug.Log ("");
 //			}
+			Resources.UnloadUnusedAssets ();
 			return bestM + bestK * 10;
 		} else {
 //			Debug.Log (val);
+			Resources.UnloadUnusedAssets ();
 			return val;
 		}
 	}
