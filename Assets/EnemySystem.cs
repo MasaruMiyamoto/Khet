@@ -1096,8 +1096,8 @@ public class EnemySystem : MonoBehaviour
 			Debug.Log(val);
 			return bestM + bestK * 10;
 		} else {
-			Debug.Log ("");
-			Debug.Log (val);
+//			Debug.Log ("");
+//			Debug.Log (val);
 			Resources.UnloadUnusedAssets ();
 			return val;
 		}
