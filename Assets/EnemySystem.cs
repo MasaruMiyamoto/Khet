@@ -203,6 +203,16 @@ public struct moveKoma
 		}
 		return 0;
 	}
+
+	public void Destroy ()
+	{
+		xNum = 10;
+		yNum = 10;
+//		if(kNum == 23){
+//			Debug.Log(Angle);
+////			Debug.Log();
+//		}
+	}
 }
 
 public struct Laser
@@ -247,13 +257,13 @@ public struct Laser
 	{
 		switch (angle) {
 		case 1:
-			y -= 1;
+			y += 1;
 			break;
 		case 2:
 			x += 1;
 			break;
 		case 3:
-			y += 1;
+			y -= 1;
 			break;
 		case 4:
 			x -= 1;
@@ -306,7 +316,7 @@ public class EnemySystem : MonoBehaviour
 	void Start ()
 	{
 		x = 1;
-		SEARCH_LEVEL = 3;
+		SEARCH_LEVEL = 1;
 		list = new moveKoma[30];
 //		move = new moveKoma[26];
 	}
@@ -352,309 +362,332 @@ public class EnemySystem : MonoBehaviour
 
 	void Shot (bool enemy)
 	{
-
+		bool izanami = false;
 		Laser laser = new Laser (enemy);
 		for (int i=0; i<move.Length; i++) {
 			if (move [i].Name == "SphinxPrefab(Clone)" && move [i].Enemy == enemy)
 				laser.angleSet (move [i].Angle);
+//			Debug.Log(laser.angle);
 		}
+//		Debug.Log (laser.x);
 		while (true) {
 
 			laser.move ();
+//			Debug.Log(laser.x);
+//			Debug.Log(laser.y);
+//			Debug.Log(laser.angle);
+//			Debug.Log("");
 			if (laser.x < 0 || laser.x > 9 || laser.y < 0 || laser.y > 9) {
 				break;
 			}
-			bool izanami = false;
+
 
 			for (int i=0; i<move.Length; i++) {
 //				Debug.Log("DesShot");
 
+//				if(move[i].xNum ==10 && move[i].yNum == 10){
+//					Debug.Log("");
+//					Debug.Log(move[i].kNum);
+//				}
+
 				if (laser.x == move [i].xNum && laser.y == move [i].yNum) {
+					if (move [i].Name != "SphinxPrefab(Clone)") {
 
-					if (laser.angle == 1) {
-						if (move [i].Name != "ScarabPrefab(Clone)") {
-							if (move [i].down) {
-								if (move [i].right) {
-									laser.spin (true);
-								} else if (move [i].left) {
-									laser.spin (false);
+						if (laser.angle == 1) {
+//							Debug.Log("angle1");
+							if (move [i].Name != "ScarabPrefab(Clone)") {
+								if (move [i].down) {
+									if (move [i].right) {
+										laser.spin (true);
+									} else if (move [i].left) {
+										laser.spin (false);
+									}
+								} else {
+									move [i].Destroy ();
+//									Debug.Log("1");
+									izanami = true;
 								}
 							} else {
-								Destroy (move [i]);
-								izanami = true;
-							}
-						} else {
-							if (move [i].down) {
-								if (move [i].right) {
-									laser.spin (true);
-								} else if (move [i].left) {
-									laser.spin (false);
-								}
-							} else {
-								if (!move [i].right) {
-									laser.spin (true);
-								} else if (!move [i].left) {
-									laser.spin (false);
-								}
-							}
-						}
-					}
-
-					if (laser.angle == 2) {
-						if (move [i].Name != "ScarabPrefab(Clone)") {
-							if (move [i].left) {
-								if (move [i].up) {
-									laser.spin (false);
-								} else if (move [i].down) {
-									laser.spin (true);
-								}
-							} else {
-								Destroy (move [i]);
-								izanami = true;
-							}
-						} else {
-							if (move [i].left) {
-								if (move [i].up) {
-									laser.spin (false);
-								} else if (move [i].down) {
-									laser.spin (true);
-								}
-							} else {
-								if (!move [i].up) {
-									laser.spin (false);
-								} else if (!move [i].down) {
-									laser.spin (true);
+								if (move [i].down) {
+									if (move [i].right) {
+										laser.spin (true);
+									} else if (move [i].left) {
+										laser.spin (false);
+									}
+								} else {
+									if (!move [i].right) {
+										laser.spin (true);
+									} else if (!move [i].left) {
+										laser.spin (false);
+									}
 								}
 							}
 						}
-					}
 
-
-					if (laser.angle == 3) {
-						if (move [i].Name != "ScarabPrefab(Clone)") {
-							if (move [i].up) {
-								if (move [i].right) {
-									laser.spin (false);
-								} else if (move [i].left) {
-									laser.spin (true);
+						else if (laser.angle == 2) {
+//							Debug.Log("angle2");
+							if (move [i].Name != "ScarabPrefab(Clone)") {
+								if (move [i].left) {
+									if (move [i].up) {
+										laser.spin (false);
+									} else if (move [i].down) {
+										laser.spin (true);
+									}
+								} else {
+									move [i].Destroy ();
+//									Debug.Log("call2");
+									izanami = true;
 								}
 							} else {
-								Destroy (move [i]);
-								izanami = true;
-							}
-						} else {
-							if (move [i].up) {
-								if (move [i].right) {
-									laser.spin (false);
-								} else if (move [i].left) {
-									laser.spin (true);
-								}
-							} else {
-								if (!move [i].right) {
-									laser.spin (false);
-								} else if (!move [i].left) {
-									laser.spin (true);
-								}
-							}
-						}
-					}
-
-
-					if (laser.angle == 4) {
-						if (move [i].Name != "ScarabPrefab(Clone)") {
-							if (move [i].right) {
-								if (move [i].up) {
-									laser.spin (true);
-								} else if (move [i].down) {
-									laser.spin (false);
-								}
-							} else {
-								Destroy (move [i]);
-								izanami = true;
-							}
-						} else {
-							if (move [i].right) {
-								if (move [i].up) {
-									laser.spin (true);
-								} else if (move [i].down) {
-									laser.spin (false);
-								}
-							} else {
-								if (!move [i].up) {
-									laser.spin (true);
-								} else if (!move [i].down) {
-									laser.spin (false);
+								if (move [i].left) {
+									if (move [i].up) {
+										laser.spin (false);
+									} else if (move [i].down) {
+										laser.spin (true);
+									}
+								} else {
+									if (!move [i].up) {
+										laser.spin (false);
+									} else if (!move [i].down) {
+										laser.spin (true);
+									}
 								}
 							}
 						}
+
+
+						else if (laser.angle == 3) {
+//							Debug.Log("angle3");
+							if (move [i].Name != "ScarabPrefab(Clone)") {
+								if (move [i].up) {
+									if (move [i].right) {
+										laser.spin (false);
+									} else if (move [i].left) {
+										laser.spin (true);
+									}
+								} else {
+									move [i].Destroy ();
+//									Debug.Log(laser.angle);
+//									Debug.Log("call3");
+									izanami = true;
+								}
+							} else {
+								if (move [i].up) {
+									if (move [i].right) {
+										laser.spin (false);
+									} else if (move [i].left) {
+										laser.spin (true);
+									}
+								} else {
+									if (!move [i].right) {
+										laser.spin (false);
+									} else if (!move [i].left) {
+										laser.spin (true);
+									}
+								}
+							}
+						}
+
+
+						else if (laser.angle == 4) {
+//							Debug.Log("angle4");
+							if (move [i].Name != "ScarabPrefab(Clone)") {
+								if (move [i].right) {
+									if (move [i].up) {
+										laser.spin (true);
+									} else if (move [i].down) {
+										laser.spin (false);
+									}
+								} else {
+									move [i].Destroy ();
+//									Debug.Log("4");
+									izanami = true;
+								}
+							} else {
+								if (move [i].right) {
+									if (move [i].up) {
+										laser.spin (true);
+									} else if (move [i].down) {
+										laser.spin (false);
+									}
+								} else {
+									if (!move [i].up) {
+										laser.spin (true);
+									} else if (!move [i].down) {
+										laser.spin (false);
+									}
+								}
+							}
+						}
+
 					}
-
-
 				}
 			}
+
 			if (izanami) {
-				Resources.UnloadUnusedAssets ();
+//				for(int i = 0;i<move.Length;i++){
+//				if(move[i].xNum ==10 && move[i].yNum == 10){
+//					Debug.Log("");
+//					Debug.Log(move[i].kNum);
+//				}
+//				}
+//				Debug.Log("SHot END");
+//				Resources.UnloadUnusedAssets ();
 				break;
 			}
 		}
 	}
 
-	int returnShot (bool enemy)
-	{
-		
-		Laser laser = new Laser (enemy);
-		for (int i=0; i<move.Length; i++) {
-			if (move [i].Name == "PharaohPrefab(Clone)" && move [i].Enemy != enemy)
-				laser.angleSet (move [i].Angle);
-		}
-		while (true) {
-			
-			laser.move ();
-			if (laser.x < 0 || laser.x > 9 || laser.y < 0 || laser.y > 9) {
-				break;
-			}
-			
-			for (int i=0; i<move.Length; i++) {
-				//				Debug.Log("DesShot");
-				
-				if (laser.x == move [i].xNum && laser.y == move [i].yNum) {
-					
-					if (laser.angle == 1) {
-						if (move [i].Name != "ScarabPrefab(Clone)") {
-							if (move [i].down) {
-								if (move [i].right) {
-									laser.spin (true);
-								} else if (move [i].left) {
-									laser.spin (false);
-								}
-							}
-						} else {
-							if (move [i].down) {
-								if (move [i].right) {
-									laser.spin (true);
-								} else if (move [i].left) {
-									laser.spin (false);
-								}
-							} else {
-								if (!move [i].right) {
-									laser.spin (true);
-								} else if (!move [i].left) {
-									laser.spin (false);
-								}
-							}
-						}
-					}
-					
-					if (laser.angle == 2) {
-						if (move [i].Name != "ScarabPrefab(Clone)") {
-							if (move [i].left) {
-								if (move [i].up) {
-									laser.spin (false);
-								} else if (move [i].down) {
-									laser.spin (true);
-								}
-							}
-						} else {
-							if (move [i].left) {
-								if (move [i].up) {
-									laser.spin (false);
-								} else if (move [i].down) {
-									laser.spin (true);
-								}
-							} else {
-								if (!move [i].up) {
-									laser.spin (false);
-								} else if (!move [i].down) {
-									laser.spin (true);
-								}
-							}
-						}
-					}
-					
-					
-					if (laser.angle == 3) {
-						if (move [i].Name != "ScarabPrefab(Clone)") {
-							if (move [i].up) {
-								if (move [i].right) {
-									laser.spin (false);
-								} else if (move [i].left) {
-									laser.spin (true);
-								}
-							}
-						} else {
-							if (move [i].up) {
-								if (move [i].right) {
-									laser.spin (false);
-								} else if (move [i].left) {
-									laser.spin (true);
-								}
-							} else {
-								if (!move [i].right) {
-									laser.spin (false);
-								} else if (!move [i].left) {
-									laser.spin (true);
-								}
-							}
-						}
-					}
-					
-					
-					if (laser.angle == 4) {
-						if (move [i].Name != "ScarabPrefab(Clone)") {
-							if (move [i].right) {
-								if (move [i].up) {
-									laser.spin (true);
-								} else if (move [i].down) {
-									laser.spin (false);
-								}
-							}
-						} else {
-							if (move [i].right) {
-								if (move [i].up) {
-									laser.spin (true);
-								} else if (move [i].down) {
-									laser.spin (false);
-								}
-							} else {
-								if (!move [i].up) {
-									laser.spin (true);
-								} else if (!move [i].down) {
-									laser.spin (false);
-								}
-							}
-						}
-					}
-					
-					
-				}
-			}
-		}
-
-		return boardScore (laser.x, laser.y, enemy);
-	}
-
-	int boardScore (int x, int y, bool enemy)
-	{
-		if (enemy) {
-			if (x >= -1 && x <= 2 && y >= 5 && y <= 8)
-				return 30;
-			else if (x == -1 && y <= 4)
-				return 20;
-		} else {
-			if (x >= 7 && x <= 10 && y >= -1 && y <= 2)
-				return 30;
-			else if (x == 10 && y <= 3)
-				return 20;
-		}
-		return 0;
-	}
-
-	void Destroy (moveKoma m)
-	{
-		m.xNum = 10;
-		m.yNum = 10;
-
-	}
+//	int returnShot (bool enemy)
+//	{
+//		
+//		Laser laser = new Laser (enemy);
+//		for (int i=0; i<move.Length; i++) {
+//			if (move [i].Name == "PharaohPrefab(Clone)" && move [i].Enemy != enemy)
+//				laser.angleSet (move [i].Angle);
+//		}
+//
+//		while (true) {
+//			
+//			laser.move ();
+//			if (laser.x < 0 || laser.x > 9 || laser.y < 0 || laser.y > 9) {
+//				break;
+//			}
+//			
+//			for (int i=0; i<move.Length; i++) {
+//				//				Debug.Log("DesShot");
+//				
+//				if (laser.x == move [i].xNum && laser.y == move [i].yNum) {
+//					
+//					if (laser.angle == 1) {
+//						if (move [i].Name != "ScarabPrefab(Clone)") {
+//							if (move [i].down) {
+//								if (move [i].right) {
+//									laser.spin (true);
+//								} else if (move [i].left) {
+//									laser.spin (false);
+//								}
+//							}
+//						} else {
+//							if (move [i].down) {
+//								if (move [i].right) {
+//									laser.spin (true);
+//								} else if (move [i].left) {
+//									laser.spin (false);
+//								}
+//							} else {
+//								if (!move [i].right) {
+//									laser.spin (true);
+//								} else if (!move [i].left) {
+//									laser.spin (false);
+//								}
+//							}
+//						}
+//					}
+//					
+//					if (laser.angle == 2) {
+//						if (move [i].Name != "ScarabPrefab(Clone)") {
+//							if (move [i].left) {
+//								if (move [i].up) {
+//									laser.spin (false);
+//								} else if (move [i].down) {
+//									laser.spin (true);
+//								}
+//							}
+//						} else {
+//							if (move [i].left) {
+//								if (move [i].up) {
+//									laser.spin (false);
+//								} else if (move [i].down) {
+//									laser.spin (true);
+//								}
+//							} else {
+//								if (!move [i].up) {
+//									laser.spin (false);
+//								} else if (!move [i].down) {
+//									laser.spin (true);
+//								}
+//							}
+//						}
+//					}
+//					
+//					
+//					if (laser.angle == 3) {
+//						if (move [i].Name != "ScarabPrefab(Clone)") {
+//							if (move [i].up) {
+//								if (move [i].right) {
+//									laser.spin (false);
+//								} else if (move [i].left) {
+//									laser.spin (true);
+//								}
+//							}
+//						} else {
+//							if (move [i].up) {
+//								if (move [i].right) {
+//									laser.spin (false);
+//								} else if (move [i].left) {
+//									laser.spin (true);
+//								}
+//							} else {
+//								if (!move [i].right) {
+//									laser.spin (false);
+//								} else if (!move [i].left) {
+//									laser.spin (true);
+//								}
+//							}
+//						}
+//					}
+//					
+//					
+//					if (laser.angle == 4) {
+//						if (move [i].Name != "ScarabPrefab(Clone)") {
+//							if (move [i].right) {
+//								if (move [i].up) {
+//									laser.spin (true);
+//								} else if (move [i].down) {
+//									laser.spin (false);
+//								}
+//							}
+//						} else {
+//							if (move [i].right) {
+//								if (move [i].up) {
+//									laser.spin (true);
+//								} else if (move [i].down) {
+//									laser.spin (false);
+//								}
+//							} else {
+//								if (!move [i].up) {
+//									laser.spin (true);
+//								} else if (!move [i].down) {
+//									laser.spin (false);
+//								}
+//							}
+//						}
+//					}
+//					
+//					
+//				}
+//			}
+//		}
+//
+//		return boardScore (laser.x, laser.y, enemy);
+//	}
+//
+//	int boardScore (int x, int y, bool enemy)
+//	{
+//		if (enemy) {
+//			if (x >= -1 && x <= 2 && y >= 5 && y <= 8)
+//				return 30;
+//			else if (x == -1 && y <= 4)
+//				return 20;
+//		} else {
+//			if (x >= 7 && x <= 10 && y >= -1 && y <= 2)
+//				return 30;
+//			else if (x == 10 && y <= 3)
+//				return 20;
+//		}
+//		return 0;
+//	}
 
 	moveKoma komaMove (int num, moveKoma m)
 	{
@@ -674,8 +707,25 @@ public class EnemySystem : MonoBehaviour
 				m.moving (num);
 
 		} else if (num == 8) {
-			if (m.Name != "PharaohPrefab(Clone)")
+			if (m.Name != "PharaohPrefab(Clone)") {
+//				if(m.kNum == 2){
+//					Debug.Log (m.Angle);
+//					Debug.Log(m.up);
+//					Debug.Log(m.right);
+//					Debug.Log(m.down);
+//					Debug.Log(m.left);
+//					
+//				}
 				m.spin (true);
+//				if(m.kNum == 2){
+//					Debug.Log (m.Angle);
+//					Debug.Log(m.up);
+//					Debug.Log(m.right);
+//					Debug.Log(m.down);
+//					Debug.Log(m.left);
+
+//				}
+			}
 		} else if (num == 9) {
 			if (m.Name != "PharaohPrefab(Clone)")
 				m.spin (false);
@@ -720,6 +770,10 @@ public class EnemySystem : MonoBehaviour
 //			m.moveJudge (undo [i]);
 //		}
 //		Debug.Log("Before");
+
+		if(m.xNum == 10 && m.yNum == 10)
+			Debug.Log(m.kNum);
+
 		for (int i = 0; i<undo.Length; i++) {
 			if (m.xNum == undo [i].xNum && m.yNum == undo [i].yNum && num < 8) {
 //				Debug.Log(m.Name);
@@ -741,6 +795,22 @@ public class EnemySystem : MonoBehaviour
 					break;
 				}
 			}
+
+			if (m.Enemy) {
+				if (m.xNum == 9 || (m.xNum == 1 && (m.yNum == 0 || m.yNum == 7))) {
+					m.xNum = m.undoX;
+					m.yNum = m.undoY;
+				}
+			} else {
+				if (m.xNum == 0 || (m.xNum == 8 && (m.yNum == 0 || m.yNum == 7))) {
+					m.xNum = m.undoX;
+					m.yNum = m.undoY;
+				}
+			}
+		}
+
+		if(m.xNum == 10 && m.yNum == 10){
+			Debug.Log(m.kNum);
 		}
 		
 		return m;
@@ -750,9 +820,10 @@ public class EnemySystem : MonoBehaviour
 	{
 		//minimax
 //		int v = minimax (true, SEARCH_LEVEL);
-		int v = alphaBeta (true, SEARCH_LEVEL, 0, 10000);
+		int v = alphaBeta (true, SEARCH_LEVEL, -10000, 10000);
 		//decision moving
-		Debug.Log (v);
+//		Debug.Log("");
+//		Debug.Log (v);
 		realMove (v);
 //		Debug.Log (v.mNum);
 //		Debug.Log (v.val);
@@ -822,6 +893,7 @@ public class EnemySystem : MonoBehaviour
 
 	int alphaBeta (bool flag, int level, int alpha, int beta)
 	{
+//		Debug.Log(level);
 		//		Debug.Log("mini");
 //		Value value = new Value ();
 		int val = 0;
@@ -846,18 +918,25 @@ public class EnemySystem : MonoBehaviour
 			for (int i=0; i<move.Length; i++) {
 				if (move [i].Enemy == flag && move [i].xNum < 10 && move [i].yNum < 10)
 					val += move [i].Value;
-				if (move [i].xNum == 10 && move [i].yNum == 10 && move [i].Enemy != flag)
-					val += move [i].Value;
+//				if (move [i].xNum == 10 && move [i].yNum == 10) {
+//					Debug.Log(move[i].kNum);
+//					Debug.Log(move[i].Enemy);
+//					if (move [i].Enemy != flag) {
+//						val += move [i].Value;
+//					} else {
+//						val -= move [i].Value;
+//					}
+//				}
 			}
 //			val += returnShot (flag);
 //			if (val > 0)
-//				Debug.Log (val);
+			Debug.Log (val);
 			Resources.UnloadUnusedAssets ();
 			return val;
 		}
 		
 		if (flag) {
-			val = 0;
+			val = -10000;
 		} else {
 			val = 10000;
 		}
@@ -866,7 +945,7 @@ public class EnemySystem : MonoBehaviour
 			for (int num = 0; num<10; num++) {
 				if (move [i].Enemy == flag) {
 					count = 0;
-					Resources.UnloadUnusedAssets();
+//					Resources.UnloadUnusedAssets ();
 					moveKoma[] undo = new moveKoma[move.Length];
 					for (int j = 0; j<move.Length; j++) {
 						undo [j] = move [j];
@@ -884,7 +963,17 @@ public class EnemySystem : MonoBehaviour
 //					Debug.Log (move [i].xNum);
 //					Debug.Log (move [i].yNum);
 //					Debug.Log ("");
+//					for(int s = 0;s<move.Length;s++){
+//						if(move[i].kNum == 23)
+//							Debug.Log(move[s].xNum);
+//					}
+
 					Shot (flag);
+
+//					for(int s = 0;s<move.Length;s++){
+//						if(move[s].xNum == 10 && move[s].yNum == 10)
+//							Debug.Log(move[s].kNum);
+//					}
 
 					int l;
 					for (l = 0; l<undo.Length; l++) {
@@ -904,6 +993,19 @@ public class EnemySystem : MonoBehaviour
 //							}
 						}
 					}
+
+					for(l = 0;l<move.Length;l++){
+						if(move[l].xNum == 10 && move[l].yNum == 10){
+
+							if(move[l].Enemy == flag){
+								count =26;
+//								Debug.Log(move[l].Name);
+//								Debug.Log(move[l].kNum);
+
+							}
+						}
+					}
+
 //					if (move [i].kNum == 9) {
 //						Debug.Log (l);
 //						Debug.Log (count);
@@ -990,9 +1092,12 @@ public class EnemySystem : MonoBehaviour
 //				Debug.Log ("");
 //			}
 			Resources.UnloadUnusedAssets ();
+			Debug.Log("");
+			Debug.Log(val);
 			return bestM + bestK * 10;
 		} else {
-//			Debug.Log (val);
+			Debug.Log ("");
+			Debug.Log (val);
 			Resources.UnloadUnusedAssets ();
 			return val;
 		}

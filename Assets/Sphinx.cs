@@ -106,7 +106,7 @@ public class Sphinx : MonoBehaviour
 		if (Shot) {
 			if (con.Turn == koma.Enemy) {
 				GameObject laser = Instantiate (Laser, transform.position, transform.rotation) as GameObject;
-				laser.transform.Translate (0, 0.3f, 0);
+				laser.transform.Translate (0, 0.25f, 0);
 				Shot = false;
 //				Debug.Log(koma.Enemy);
 				con.Turn = !con.Turn;

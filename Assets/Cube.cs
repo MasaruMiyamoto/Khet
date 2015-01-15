@@ -10,10 +10,13 @@ public class Cube : MonoBehaviour
 	public Vector3 pos;
 	public bool CollisionStay = false;
 	public bool ScarabFlag = false;
+	public Texture maru;
+	public Texture sankaku;
 	// Use this for initialization
 	void Start ()
 	{
 		renderer.material.color = Color.gray;
+
 	}
 	
 	// Update is called once per frame
@@ -24,6 +27,11 @@ public class Cube : MonoBehaviour
 		}else if(this.tag == "Ally" && GameObject.Find("SELECT").GetComponent<Select> ().Enemy){
 			renderer.material.color = Color.gray;
 		}
+
+		if(this.tag == "Enemy")
+			renderer.material.mainTexture = maru;
+		else if(this.tag == "Ally")
+			renderer.material.mainTexture = sankaku;
 
 	}
 
