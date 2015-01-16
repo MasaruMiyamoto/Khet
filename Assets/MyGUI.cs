@@ -18,6 +18,11 @@ public class MyGUI : MonoBehaviour
 	public int flag = 0;
 	public bool win;
 	public bool turnFlag = false;
+
+	//set board
+	GameObject CubeClone;
+	GameObject KomaClone;
+
 //	bool select = false;
 	//public GameObject cubes;
 
@@ -112,9 +117,7 @@ public class MyGUI : MonoBehaviour
 	}
 
 	void StartGame(){
-		//set board
-		GameObject CubeClone;
-		GameObject KomaClone;
+
 		
 		for (float i = 0; i < 8; i = i + 1.1f) {
 			for (float j = 0; j < 11; j = j + 1.1f) {
