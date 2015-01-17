@@ -26,6 +26,10 @@ public struct moveKoma
 		Name = name;
 		Angle = angle;
 		Value = initVal (name);
+		up = false;
+		down = false;
+		left = false;
+		right = false;
 	}
 
 	public void init ()
@@ -422,9 +426,7 @@ public class EnemySystem : MonoBehaviour
 									}
 								}
 							}
-						}
-
-						else if (laser.angle == 2) {
+						} else if (laser.angle == 2) {
 //							Debug.Log("angle2");
 							if (move [i].Name != "ScarabPrefab(Clone)") {
 								if (move [i].left) {
@@ -453,10 +455,7 @@ public class EnemySystem : MonoBehaviour
 									}
 								}
 							}
-						}
-
-
-						else if (laser.angle == 3) {
+						} else if (laser.angle == 3) {
 //							Debug.Log("angle3");
 							if (move [i].Name != "ScarabPrefab(Clone)") {
 								if (move [i].up) {
@@ -486,10 +485,7 @@ public class EnemySystem : MonoBehaviour
 									}
 								}
 							}
-						}
-
-
-						else if (laser.angle == 4) {
+						} else if (laser.angle == 4) {
 //							Debug.Log("angle4");
 							if (move [i].Name != "ScarabPrefab(Clone)") {
 								if (move [i].right) {
@@ -538,157 +534,6 @@ public class EnemySystem : MonoBehaviour
 		}
 	}
 
-//	int returnShot (bool enemy)
-//	{
-//		
-//		Laser laser = new Laser (enemy);
-//		for (int i=0; i<move.Length; i++) {
-//			if (move [i].Name == "PharaohPrefab(Clone)" && move [i].Enemy != enemy)
-//				laser.angleSet (move [i].Angle);
-//		}
-//
-//		while (true) {
-//			
-//			laser.move ();
-//			if (laser.x < 0 || laser.x > 9 || laser.y < 0 || laser.y > 9) {
-//				break;
-//			}
-//			
-//			for (int i=0; i<move.Length; i++) {
-//				//				Debug.Log("DesShot");
-//				
-//				if (laser.x == move [i].xNum && laser.y == move [i].yNum) {
-//					
-//					if (laser.angle == 1) {
-//						if (move [i].Name != "ScarabPrefab(Clone)") {
-//							if (move [i].down) {
-//								if (move [i].right) {
-//									laser.spin (true);
-//								} else if (move [i].left) {
-//									laser.spin (false);
-//								}
-//							}
-//						} else {
-//							if (move [i].down) {
-//								if (move [i].right) {
-//									laser.spin (true);
-//								} else if (move [i].left) {
-//									laser.spin (false);
-//								}
-//							} else {
-//								if (!move [i].right) {
-//									laser.spin (true);
-//								} else if (!move [i].left) {
-//									laser.spin (false);
-//								}
-//							}
-//						}
-//					}
-//					
-//					if (laser.angle == 2) {
-//						if (move [i].Name != "ScarabPrefab(Clone)") {
-//							if (move [i].left) {
-//								if (move [i].up) {
-//									laser.spin (false);
-//								} else if (move [i].down) {
-//									laser.spin (true);
-//								}
-//							}
-//						} else {
-//							if (move [i].left) {
-//								if (move [i].up) {
-//									laser.spin (false);
-//								} else if (move [i].down) {
-//									laser.spin (true);
-//								}
-//							} else {
-//								if (!move [i].up) {
-//									laser.spin (false);
-//								} else if (!move [i].down) {
-//									laser.spin (true);
-//								}
-//							}
-//						}
-//					}
-//					
-//					
-//					if (laser.angle == 3) {
-//						if (move [i].Name != "ScarabPrefab(Clone)") {
-//							if (move [i].up) {
-//								if (move [i].right) {
-//									laser.spin (false);
-//								} else if (move [i].left) {
-//									laser.spin (true);
-//								}
-//							}
-//						} else {
-//							if (move [i].up) {
-//								if (move [i].right) {
-//									laser.spin (false);
-//								} else if (move [i].left) {
-//									laser.spin (true);
-//								}
-//							} else {
-//								if (!move [i].right) {
-//									laser.spin (false);
-//								} else if (!move [i].left) {
-//									laser.spin (true);
-//								}
-//							}
-//						}
-//					}
-//					
-//					
-//					if (laser.angle == 4) {
-//						if (move [i].Name != "ScarabPrefab(Clone)") {
-//							if (move [i].right) {
-//								if (move [i].up) {
-//									laser.spin (true);
-//								} else if (move [i].down) {
-//									laser.spin (false);
-//								}
-//							}
-//						} else {
-//							if (move [i].right) {
-//								if (move [i].up) {
-//									laser.spin (true);
-//								} else if (move [i].down) {
-//									laser.spin (false);
-//								}
-//							} else {
-//								if (!move [i].up) {
-//									laser.spin (true);
-//								} else if (!move [i].down) {
-//									laser.spin (false);
-//								}
-//							}
-//						}
-//					}
-//					
-//					
-//				}
-//			}
-//		}
-//
-//		return boardScore (laser.x, laser.y, enemy);
-//	}
-//
-//	int boardScore (int x, int y, bool enemy)
-//	{
-//		if (enemy) {
-//			if (x >= -1 && x <= 2 && y >= 5 && y <= 8)
-//				return 30;
-//			else if (x == -1 && y <= 4)
-//				return 20;
-//		} else {
-//			if (x >= 7 && x <= 10 && y >= -1 && y <= 2)
-//				return 30;
-//			else if (x == 10 && y <= 3)
-//				return 20;
-//		}
-//		return 0;
-//	}
-
 	moveKoma komaMove (int num, moveKoma m)
 	{
 //		if (m.kNum == 8) {
@@ -731,48 +576,10 @@ public class EnemySystem : MonoBehaviour
 				m.spin (false);
 		}
 
-//		switch (num) {
-//		case 0:
-//			m.moving (1);
-//			break;
-//		case 1:
-//			m.moving (2);
-//			break;
-//		case 2:
-//			m.moving (3);
-//			break;
-//		case 3:
-//			m.moving (4);
-//			break;
-//		case 4:
-//			m.moving (5);
-//			break;
-//		case 5:
-//			m.moving (6);
-//			break;
-//		case 6:
-//			m.moving (7);
-//			break;
-//		case 7:
-//			m.moving (8);
-//			break;
-//		case 8:
-//			m.spin (true);
-//			break;
-//		case 9:
-//			m.spin (false);
-//			break;
-//		default:
-//			break;
-//		}
 
-//		for (int i = 0; i<undo.Length; i++) {
-//			m.moveJudge (undo [i]);
-//		}
-//		Debug.Log("Before");
 
-		if(m.xNum == 10 && m.yNum == 10)
-			Debug.Log(m.kNum);
+		if (m.xNum == 10 && m.yNum == 10)
+			Debug.Log (m.kNum);
 
 		for (int i = 0; i<undo.Length; i++) {
 			if (m.xNum == undo [i].xNum && m.yNum == undo [i].yNum && num < 8) {
@@ -809,8 +616,8 @@ public class EnemySystem : MonoBehaviour
 			}
 		}
 
-		if(m.xNum == 10 && m.yNum == 10){
-			Debug.Log(m.kNum);
+		if (m.xNum == 10 && m.yNum == 10) {
+			Debug.Log (m.kNum);
 		}
 		
 		return m;
@@ -823,73 +630,14 @@ public class EnemySystem : MonoBehaviour
 		int v = alphaBeta (true, SEARCH_LEVEL, -10000, 10000);
 		//decision moving
 //		Debug.Log("");
-//		Debug.Log (v);
+		Debug.Log (v);
 		realMove (v);
 //		Debug.Log (v.mNum);
 //		Debug.Log (v.val);
 
 	}
 
-//	int minimax (bool flag, int level)
-//	{
-////		Debug.Log("mini");
-//		Value value = new Value ();
-//		int val = 0;
-//		int childValue = 0;
-//	
-//		if (level == 0) {
-//			for (int i=0; i<move.Length; i++) {
-//				if (move [i].xNum == 10 && move [i].yNum == 10 && !move [i].Enemy)
-//					val += move [i].Value;
-//			}
-//			return val;
-//		}
-//	
-//		if (flag) {
-//			val = 0;
-//		} else {
-//			val = 10000;
-//		}
-//
-//		for (int i = 0; i<move.Length; i++) {
-//			for (int num = 0; num<10; num++) {
-//			
-//				moveKoma[] undo = new moveKoma[30];
-//				for (int j = 0; j<move.Length; j++) {
-//					undo [j] = move [j];
-//				}
-//
-//				if (move [i].Enemy == flag) {
-//					komaMove (num, move [i]);
-//					Shot (flag);
-//					value.kNum = move [i].kNum;
-//					value.mNum = num;
-//				}
-//
-//				childValue = minimax (!flag, level - 1);
-//
-//				if (flag) {
-//					if (childValue > val) {
-//						val = childValue;
-//					}
-//				} else {
-//					if (childValue < val) {
-//						val = childValue;
-//					}
-//				}
-//
-//				for (int k= 0; k<move.Length; k++) {
-//					move [k] = undo [k];
-//				}
-//
-//			}
-//		}
-//		if (level == SEARCH_LEVEL) {
-//			return value.mNum + value.kNum * 10;
-//		} else {
-//			return val;
-//		}
-//	}
+
 
 	int alphaBeta (bool flag, int level, int alpha, int beta)
 	{
@@ -903,30 +651,20 @@ public class EnemySystem : MonoBehaviour
 		int bestM = 0;
 		int count = 0;
 
-//		if(count == 26){
-//			if (flag) {
-//				return 0;
-//			} else {
-//				return 10000;
-//			}
-//		}else{
-//			count = 0;
-//		}
-
-
 		if (level == 0) {
 			for (int i=0; i<move.Length; i++) {
-				if (move [i].Enemy == flag && move [i].xNum < 10 && move [i].yNum < 10)
+				if (move [i].Enemy && move [i].xNum < 10 && move [i].yNum < 10)
 					val += move [i].Value;
-//				if (move [i].xNum == 10 && move [i].yNum == 10) {
+				if (move [i].xNum == 10 && move [i].yNum == 10) {
 //					Debug.Log(move[i].kNum);
 //					Debug.Log(move[i].Enemy);
-//					if (move [i].Enemy != flag) {
-//						val += move [i].Value;
-//					} else {
+					if (!move [i].Enemy) {
+						val += move [i].Value;
+					} 
+//					else {
 //						val -= move [i].Value;
 //					}
-//				}
+				}
 			}
 //			val += returnShot (flag);
 //			if (val > 0)
@@ -994,11 +732,11 @@ public class EnemySystem : MonoBehaviour
 						}
 					}
 
-					for(l = 0;l<move.Length;l++){
-						if(move[l].xNum == 10 && move[l].yNum == 10){
+					for (l = 0; l<move.Length; l++) {
+						if (move [l].xNum == 10 && move [l].yNum == 10) {
 
-							if(move[l].Enemy == flag){
-								count =26;
+							if (move [l].Enemy == flag) {
+								count = 26;
 //								Debug.Log(move[l].Name);
 //								Debug.Log(move[l].kNum);
 
@@ -1012,9 +750,9 @@ public class EnemySystem : MonoBehaviour
 //						Debug.Log ("");
 //					}
 					if (count != 26) {
-//					Debug.Log ("child");
+					Debug.Log ("child");
 						childValue = alphaBeta (!flag, level - 1, alpha, beta);
-					} 
+					}
 
 //					for (int k= 0; k<move.Length; k++) {
 //						move [k] = undo [k];
@@ -1042,7 +780,7 @@ public class EnemySystem : MonoBehaviour
 							for (int k= 0; k<move.Length; k++) {
 								move [k] = undo [k];
 							}
-							Resources.UnloadUnusedAssets ();
+//							Resources.UnloadUnusedAssets ();
 							return val;
 						}
 
@@ -1059,7 +797,7 @@ public class EnemySystem : MonoBehaviour
 							for (int k= 0; k<move.Length; k++) {
 								move [k] = undo [k];
 							}
-							Resources.UnloadUnusedAssets ();
+//							Resources.UnloadUnusedAssets ();
 							return val;
 						}
 //					if (level != SEARCH_LEVEL) {
@@ -1081,7 +819,7 @@ public class EnemySystem : MonoBehaviour
 //						Debug.Log (move [k].xNum);
 //						Debug.Log (undo [k].xNum);
 					}
-					Resources.UnloadUnusedAssets ();
+//					Resources.UnloadUnusedAssets ();
 				}
 			}
 		}
@@ -1091,14 +829,18 @@ public class EnemySystem : MonoBehaviour
 //				Debug.Log (move [i].yNum);
 //				Debug.Log ("");
 //			}
-			Resources.UnloadUnusedAssets ();
+//			Resources.UnloadUnusedAssets ();
 			Debug.Log("");
-			Debug.Log(val);
+//			Debug.Log(val);
+//			Debug.Log(alpha);
+//			Debug.Log(beta);
+			Debug.Log(bestK);
+			Debug.Log(bestM);
 			return bestM + bestK * 10;
 		} else {
 //			Debug.Log ("");
 //			Debug.Log (val);
-			Resources.UnloadUnusedAssets ();
+//			Resources.UnloadUnusedAssets ();
 			return val;
 		}
 	}

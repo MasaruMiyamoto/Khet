@@ -21,7 +21,7 @@ public class Destroy : MonoBehaviour {
 			int you = (int)collider.gameObject.transform.eulerAngles.y;
 //						Debug.Log (me);
 //						Debug.Log (you);
-			if (me - you == 0 || me - you == -360) {
+			if (me - you == 180 || me - you == -180) {
 				Destroy (collider.gameObject);
 			} else {
 				pre.transform.Translate (0, 0.2f, 0);
