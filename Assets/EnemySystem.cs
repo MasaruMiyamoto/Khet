@@ -314,13 +314,14 @@ public class EnemySystem : MonoBehaviour
 	public int x;
 	public bool Enemy;
 	int SEARCH_LEVEL;
+	int countKoma;
 	moveKoma[] move;
 	moveKoma[] list;
 	// Use this for initialization
 	void Start ()
 	{
 		x = 1;
-		SEARCH_LEVEL = 1;
+		SEARCH_LEVEL = 2;
 		list = new moveKoma[30];
 //		move = new moveKoma[26];
 	}
@@ -354,6 +355,7 @@ public class EnemySystem : MonoBehaviour
 				for (int j = 0; j<i; j++) {
 					move [j] = list [j];
 				}
+				countKoma = i;
 				x++;
 				Time.timeScale = 0;
 				compute ();
@@ -577,7 +579,6 @@ public class EnemySystem : MonoBehaviour
 		}
 
 
-
 		if (m.xNum == 10 && m.yNum == 10)
 			Debug.Log (m.kNum);
 
@@ -637,8 +638,6 @@ public class EnemySystem : MonoBehaviour
 
 	}
 
-
-
 	int alphaBeta (bool flag, int level, int alpha, int beta)
 	{
 //		Debug.Log(level);
@@ -668,7 +667,7 @@ public class EnemySystem : MonoBehaviour
 			}
 //			val += returnShot (flag);
 //			if (val > 0)
-			Debug.Log (val);
+//			Debug.Log (val);
 			Resources.UnloadUnusedAssets ();
 			return val;
 		}
@@ -683,7 +682,7 @@ public class EnemySystem : MonoBehaviour
 			for (int num = 0; num<10; num++) {
 				if (move [i].Enemy == flag) {
 					count = 0;
-//					Resources.UnloadUnusedAssets ();
+					Resources.UnloadUnusedAssets ();
 					moveKoma[] undo = new moveKoma[move.Length];
 					for (int j = 0; j<move.Length; j++) {
 						undo [j] = move [j];
@@ -708,50 +707,36 @@ public class EnemySystem : MonoBehaviour
 
 					Shot (flag);
 
-//					for(int s = 0;s<move.Length;s++){
-//						if(move[s].xNum == 10 && move[s].yNum == 10)
+					for(int s = 0;s<move.Length;s++){
+						if(move[s].xNum == 10 && move[s].yNum == 10){
+							if(move[s].Name == "PharaohPrefab(Clone)" && move[s].Enemy != flag){
+								Debug.Log(i);
+								return move[i].kNum*10 + num;
 //							Debug.Log(move[s].kNum);
-//					}
-
-					int l;
-					for (l = 0; l<undo.Length; l++) {
-						if (undo [l].xNum == move [l].xNum && undo [l].yNum == move [l].yNum && undo [l].Angle == move [l].Angle) {
-							count++;
-						} else {
-//							if (move [l].kNum == 9) {
-//								Debug.Log (move [l].xNum);
-//								Debug.Log (move [l].yNum);
-//								Debug.Log (move [l].Angle);
-//								Debug.Log ("");
-//								
-//								Debug.Log (undo [l].xNum);
-//								Debug.Log (undo [l].yNum);
-//								Debug.Log (undo [l].Angle);
-//								Debug.Log ("");
-//							}
-						}
-					}
-
-					for (l = 0; l<move.Length; l++) {
-						if (move [l].xNum == 10 && move [l].yNum == 10) {
-
-							if (move [l].Enemy == flag) {
-								count = 26;
-//								Debug.Log(move[l].Name);
-//								Debug.Log(move[l].kNum);
-
 							}
 						}
 					}
 
-//					if (move [i].kNum == 9) {
-//						Debug.Log (l);
-//						Debug.Log (count);
-//						Debug.Log ("");
-//					}
-					if (count != 26) {
-					Debug.Log ("child");
+					int l;
+					for (l = 0; l<undo.Length; l++) {
+						if (undo [l].xNum == move [l].xNum && undo [l].yNum == move [l].yNum && undo [l].Angle == move [l].Angle) 
+							count++;
+					}
+
+
+
+					if (count != countKoma) {
+//						Debug.Log ("child");
+//						Debug.Log (i);
+//						Debug.Log (num);
 						childValue = alphaBeta (!flag, level - 1, alpha, beta);
+					} else {
+						if (flag) {
+							childValue = -10000;
+						} else {
+							childValue = 10000;
+						}
+//						break;
 					}
 
 //					for (int k= 0; k<move.Length; k++) {
@@ -774,15 +759,22 @@ public class EnemySystem : MonoBehaviour
 							bestK = move [i].kNum;
 							bestM = num;
 							alpha = val;
+						} else if (childValue == val) {
+							if (RandomBool ()) {
+								bestK = move [i].kNum;
+								bestM = num;
+							}
 						}
+
 
 						if (val > beta) {
 							for (int k= 0; k<move.Length; k++) {
 								move [k] = undo [k];
 							}
-//							Resources.UnloadUnusedAssets ();
+							Resources.UnloadUnusedAssets ();
 							return val;
 						}
+
 
 
 					} else {
@@ -797,7 +789,7 @@ public class EnemySystem : MonoBehaviour
 							for (int k= 0; k<move.Length; k++) {
 								move [k] = undo [k];
 							}
-//							Resources.UnloadUnusedAssets ();
+							Resources.UnloadUnusedAssets ();
 							return val;
 						}
 //					if (level != SEARCH_LEVEL) {
@@ -819,7 +811,7 @@ public class EnemySystem : MonoBehaviour
 //						Debug.Log (move [k].xNum);
 //						Debug.Log (undo [k].xNum);
 					}
-//					Resources.UnloadUnusedAssets ();
+					Resources.UnloadUnusedAssets ();
 				}
 			}
 		}
@@ -829,20 +821,25 @@ public class EnemySystem : MonoBehaviour
 //				Debug.Log (move [i].yNum);
 //				Debug.Log ("");
 //			}
-//			Resources.UnloadUnusedAssets ();
-			Debug.Log("");
+			Resources.UnloadUnusedAssets ();
+//			Debug.Log ("");
 //			Debug.Log(val);
 //			Debug.Log(alpha);
 //			Debug.Log(beta);
-			Debug.Log(bestK);
-			Debug.Log(bestM);
+//			Debug.Log (bestK);
+//			Debug.Log (bestM);
 			return bestM + bestK * 10;
 		} else {
 //			Debug.Log ("");
 //			Debug.Log (val);
-//			Resources.UnloadUnusedAssets ();
+			Resources.UnloadUnusedAssets ();
 			return val;
 		}
+	}
+
+	bool RandomBool ()
+	{
+		return Random.Range (0, 2) == 0;
 	}
 
 	void realMove (int val)

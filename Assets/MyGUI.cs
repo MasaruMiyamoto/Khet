@@ -12,6 +12,7 @@ public class MyGUI : MonoBehaviour
 	public GameObject Scarab;
 	public GameObject Anubis;
 	public GameObject Pharaoh;
+	public GameObject Controll;
 
 //	GameObject mCube;
 //	GameObject mKoma;
@@ -32,6 +33,7 @@ public class MyGUI : MonoBehaviour
 	{
 		if (flag == 0) {
 			if (GUI.Button (new Rect (185, 200, 100, 50), "VS")) {
+				GameObject.Find ("EnemySystem").GetComponent<EnemySystem> ().Enemy = false;
 				StartGame (2);
 			}
 			if (GUI.Button (new Rect (285, 200, 100, 50), "CPU")) {
@@ -73,6 +75,9 @@ public class MyGUI : MonoBehaviour
 			if (GUI.Button (new Rect (235, 200, 100, 50), "Restart")) {
 				flag = 0;
 				turnFlag = false;
+				Controll c = GameObject.Find("ControllPlayer").GetComponent<Controll>();
+				c.Turn = false;
+				c.Move = false;
 			}
 		}
 
