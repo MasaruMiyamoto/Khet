@@ -75,14 +75,26 @@ public struct moveKoma
 			switch (angle) {
 			case 0:
 				up = true;
+				down = false;
+				right = false;
+				left = false;
 				break;
 			case 90:
+				up = false;
+				down = false;
 				right = true;
+				left = false;
 				break;
 			case 180:
+				up = false;
 				down = true;
+				right = false;
+				left = false;
 				break;
 			case 270:
+				up = false;
+				down = false;
+				right = false;
 				left = true;
 				break;
 			default:
@@ -321,7 +333,7 @@ public class EnemySystem : MonoBehaviour
 	void Start ()
 	{
 		x = 1;
-		SEARCH_LEVEL = 2;
+		SEARCH_LEVEL = 1;
 		list = new moveKoma[30];
 //		move = new moveKoma[26];
 	}
@@ -407,6 +419,8 @@ public class EnemySystem : MonoBehaviour
 										laser.spin (true);
 									} else if (move [i].left) {
 										laser.spin (false);
+									}else if(move [i].Name == "AnubisPrefab(Clone)"){
+										izanami = true;
 									}
 								} else {
 									move [i].Destroy ();
@@ -436,6 +450,8 @@ public class EnemySystem : MonoBehaviour
 										laser.spin (false);
 									} else if (move [i].down) {
 										laser.spin (true);
+									}else if(move [i].Name == "AnubisPrefab(Clone)"){
+										izanami = true;
 									}
 								} else {
 									move [i].Destroy ();
@@ -465,6 +481,8 @@ public class EnemySystem : MonoBehaviour
 										laser.spin (false);
 									} else if (move [i].left) {
 										laser.spin (true);
+									}else if(move [i].Name == "AnubisPrefab(Clone)"){
+										izanami = true;
 									}
 								} else {
 									move [i].Destroy ();
@@ -495,6 +513,8 @@ public class EnemySystem : MonoBehaviour
 										laser.spin (true);
 									} else if (move [i].down) {
 										laser.spin (false);
+									}else if(move [i].Name == "AnubisPrefab(Clone)"){
+										izanami = true;
 									}
 								} else {
 									move [i].Destroy ();
@@ -645,6 +665,8 @@ public class EnemySystem : MonoBehaviour
 //		Value value = new Value ();
 		int val = 0;
 		int childValue = 0;
+		int[] sameVal = new int[30];
+		int countLength = 0; 
 
 		int bestK = 0;
 		int bestM = 0;
@@ -705,17 +727,6 @@ public class EnemySystem : MonoBehaviour
 //							Debug.Log(move[s].xNum);
 //					}
 
-					Shot (flag);
-
-					for(int s = 0;s<move.Length;s++){
-						if(move[s].xNum == 10 && move[s].yNum == 10){
-							if(move[s].Name == "PharaohPrefab(Clone)" && move[s].Enemy != flag){
-								Debug.Log(i);
-								return move[i].kNum*10 + num;
-//							Debug.Log(move[s].kNum);
-							}
-						}
-					}
 
 					int l;
 					for (l = 0; l<undo.Length; l++) {
@@ -739,19 +750,17 @@ public class EnemySystem : MonoBehaviour
 //						break;
 					}
 
-//					for (int k= 0; k<move.Length; k++) {
-//						move [k] = undo [k];
-//						Debug.Log ("undo"); //OK
-//						Debug.Log (move [k].xNum);
-//						Debug.Log (undo [k].xNum);
-//					}
-//					else {
-//					if (flag) {
-//						childValue = 0;
-//					} else {
-//						childValue = 10000;
-//					}
-//				}
+					Shot (flag);
+
+					for (int s = 0; s<move.Length; s++) {
+						if (move [s].xNum == 10 && move [s].yNum == 10) {
+							if (move [s].Name == "PharaohPrefab(Clone)" && !move [s].Enemy && level == SEARCH_LEVEL) {
+								Debug.Log ("Destroy");
+								return move [i].kNum * 10 + num;
+								//							Debug.Log(move[s].kNum);
+							}
+						}
+					}
 
 					if (flag) {
 						if (childValue > val) {
@@ -760,10 +769,7 @@ public class EnemySystem : MonoBehaviour
 							bestM = num;
 							alpha = val;
 						} else if (childValue == val) {
-							if (RandomBool ()) {
-								bestK = move [i].kNum;
-								bestM = num;
-							}
+
 						}
 
 
@@ -823,7 +829,7 @@ public class EnemySystem : MonoBehaviour
 //			}
 			Resources.UnloadUnusedAssets ();
 //			Debug.Log ("");
-//			Debug.Log(val);
+			Debug.Log (val);
 //			Debug.Log(alpha);
 //			Debug.Log(beta);
 //			Debug.Log (bestK);
