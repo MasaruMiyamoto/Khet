@@ -295,7 +295,7 @@ public class MyGUI : MonoBehaviour
 			setKoma (true, vec, 180, 2, this.Pyramid);
 		
 		if (x == 7 && y == 7) 
-			setKoma (true, vec, 180, 3, this.Pyramid);
+			setKoma (true, vec, -90, 3, this.Pyramid);
 		
 		if (x == 8 && y == 6) 
 			setKoma (true, vec, -90, 4, this.Pyramid); 
@@ -346,7 +346,7 @@ public class MyGUI : MonoBehaviour
 		
 		//Scarab
 		if (x == 3 && y == 3) 
-			setKoma (false, vec, 0, 29, this.Scarab);
+			setKoma (false, vec, 90, 29, this.Scarab);
 		
 		if (x == 5 && y == 3) 
 			setKoma (false, vec, 90, 30, this.Scarab);
