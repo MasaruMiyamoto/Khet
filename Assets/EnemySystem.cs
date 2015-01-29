@@ -844,10 +844,10 @@ public class EnemySystem : MonoBehaviour
 //			Debug.Log (bestK);
 //			Debug.Log (bestM);
 			if(sameVal[0] == 0){
-//				Debug.Log("Not Random");
+				Debug.Log("Not Random");
 				return bestM + bestK * 10;
 			}else{
-//				Debug.Log("Random");
+				Debug.Log("Random");
 				int ret = Random.Range(0,countLength);
 				return sameVal[ret];
 			}
